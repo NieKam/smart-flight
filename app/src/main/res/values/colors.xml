@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!--Color Palette-->
+  <color name="purple_main">#5b5999</color>
+  <color name="purple_dark">#484685</color>
+  <color name="dark_overlay_alpha_50">#80000000</color>
+  <color name="dark_overlay_alpha_20">#33000000</color>
+  <color name="cyan_main">#25e5fe</color>
+  <color name="cyan_light">#99E5FC</color>
+  <color name="cyan_main_50">#8025e5fe</color>
+  <color name="text_color_dark">#a1a0c4</color>
+  <color name="text_color_light">#d9d9ed</color>
+  <color name="satellite_green">#4caf50</color>
+  <color name="satellite_red">#f44336</color>
+
+  <color name="card_background">@color/purple_main</color>
+  <color name="toast_background">#2C2163</color>
+</resources>

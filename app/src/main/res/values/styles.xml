@@ -1,0 +1,104 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="colorPrimary">@color/purple_main</item>
+        <item name="colorPrimaryDark">@color/purple_main</item>
+        <item name="colorAccent">@color/cyan_main</item>
+        <item name="colorControlHighlight">@color/cyan_main_50</item>
+        <item name="android:windowBackground">@color/purple_dark</item>
+        <item name="md_background_color">@color/purple_dark</item>
+        <item name="md_color_title">@color/text_color_dark</item>
+        <item name="md_color_content">@color/text_color_light</item>
+        <item name="md_corner_radius">@dimen/card_radius</item>
+        <item name="md_color_button_text">@color/cyan_main</item>
+        <item name="android:windowAnimationStyle">@style/window_transition</item>
+    </style>
+
+    <style name="window_transition" parent="@android:style/Animation.Activity">
+
+        <item name="android:taskOpenEnterAnimation">@anim/slide_in_forwards</item>
+        <item name="android:taskOpenExitAnimation">@anim/hold</item>
+        <item name="android:taskCloseEnterAnimation">@anim/hold</item>
+        <item name="android:taskCloseExitAnimation">@anim/slide_out_backwards</item>
+        <item name="android:taskToFrontEnterAnimation">@anim/slide_in_forwards</item>
+        <item name="android:taskToFrontExitAnimation">@anim/hold</item>
+        <item name="android:taskToBackEnterAnimation">@anim/hold</item>
+        <item name="android:taskToBackExitAnimation">@anim/slide_out_backwards</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="PreferenceScreen" parent="AppTheme">
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:textColorSecondary">@color/text_color_dark</item>
+    </style>
+
+    <style name="MainScreen">
+        <item name="android:background">@color/purple_dark</item>
+    </style>
+
+    <style name="Toolbar" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="CompassLetter">
+        <item name="android:layout_width">@dimen/compass_letter</item>
+        <item name="android:layout_height">@dimen/compass_letter</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="android:textSize">@dimen/compass_letter_font_size</item>
+    </style>
+
+    <style name="TextLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_color_dark</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="TextLabel.DisambiguationTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+        <item name="android:layout_marginStart">@dimen/small_margin</item>
+        <item name="android:layout_marginBottom">@dimen/small_margin</item>
+        <item name="android:layout_marginTop">@dimen/small_margin</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="TextValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:textSize">@dimen/text_small</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:textColor">@color/text_color_light</item>
+    </style>
+
+    <style name="Button">
+        <item name="android:textColor">@drawable/button_text_selector</item>
+        <item name="android:background">@drawable/rounded_button</item>
+    </style>
+
+    <style name="Button.OverlayCard">
+        <item name="android:textColor">@drawable/button_text_selector</item>
+        <item name="android:background">@drawable/rounded_button_with_border</item>
+    </style>
+
+</resources>

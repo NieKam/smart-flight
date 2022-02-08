@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rcv_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/card_height">
+
+    <ImageView
+        android:id="@+id/delete_route_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/default_margin"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time_to_b_label"
+        app:srcCompat="@drawable/delete_icon" />
+
+    <ImageButton
+        android:id="@+id/choose_city_a"
+        android:layout_width="@dimen/plane_icon_size"
+        android:layout_height="@dimen/plane_icon_size"
+        android:layout_margin="@dimen/default_margin"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".8"
+        app:srcCompat="@drawable/take_off_icon" />
+
+    <ImageButton
+        android:id="@+id/choose_city_b"
+        android:layout_width="@dimen/plane_icon_size"
+        android:layout_height="@dimen/plane_icon_size"
+        android:layout_margin="@dimen/default_margin"
+        android:background="?android:selectableItemBackground"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".8"
+        app:srcCompat="@drawable/landing_icon" />
+
+    <TextView
+        android:id="@+id/label"
+        style="@style/TextLabel"
+        android:layout_margin="@dimen/default_margin"
+        android:text="@string/tap_to_select_airport"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/city_a"
+        style="@style/TextValue"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/small_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:focusable="true"
+        android:gravity="start"
+        android:maxLines="1"
+        android:textSize="@dimen/text_medium"
+        app:layout_constraintEnd_toStartOf="@id/center_guideline"
+        app:layout_constraintStart_toStartOf="@id/choose_city_a"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+    <TextView
+        android:id="@+id/city_b"
+        style="@style/TextValue"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/small_margin"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:ellipsize="end"
+        android:focusable="true"
+        android:gravity="end"
+        android:maxLines="1"
+        android:textSize="@dimen/text_medium"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/choose_city_b"
+        app:layout_constraintStart_toEndOf="@id/center_guideline"
+        app:layout_constraintTop_toBottomOf="@id/label" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_for_labels"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".33" />
+
+    <TextView
+        android:id="@+id/distance_between_cities_label"
+        style="@style/TextLabel"
+        android:layout_marginStart="@dimen/default_margin"
+        android:text="@string/distance_between_cities"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_for_labels" />
+
+    <TextView
+        android:id="@+id/distance_between_cities_value"
+        style="@style/TextValue"
+        android:layout_marginStart="@dimen/default_margin"
+        android:text="@string/dash"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/distance_between_cities_label"
+        app:layout_constraintTop_toTopOf="@+id/distance_between_cities_label" />
+
+    <TextView
+        android:id="@+id/distance_to_b_label"
+        style="@style/TextLabel"
+        android:layout_marginTop="@dimen/small_margin"
+        android:text="@string/distance_to_destination"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/distance_between_cities_label"
+        app:layout_constraintTop_toBottomOf="@id/distance_between_cities_value" />
+
+    <TextView
+        android:id="@+id/distance_to_b_value"
+        style="@style/TextValue"
+        android:layout_marginStart="@dimen/default_margin"
+        android:text="@string/dash"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/distance_to_b_label"
+        app:layout_constraintTop_toTopOf="@id/distance_to_b_label" />
+
+    <TextView
+        android:id="@+id/time_to_b_label"
+        style="@style/TextLabel"
+        android:layout_marginTop="@dimen/small_margin"
+        android:text="@string/estimated_arrival"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/distance_between_cities_label"
+        app:layout_constraintTop_toBottomOf="@id/distance_to_b_label" />
+
+    <TextView
+        android:id="@+id/time_to_b_value"
+        style="@style/TextValue"
+        android:layout_marginStart="@dimen/default_margin"
+        android:text="@string/dash"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/time_to_b_label"
+        app:layout_constraintTop_toTopOf="@id/time_to_b_label" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/center_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+</androidx.constraintlayout.widget.ConstraintLayout>

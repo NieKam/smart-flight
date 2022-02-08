@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_height"
+    >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/main_content"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+    <View
+        android:id="@+id/ground_dark_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/guideline_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/dark_overlay_alpha_20"
+        />
+
+    <TextView
+        android:id="@+id/calibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/default_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/cyan_main"
+        android:textSize="@dimen/text_mini"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:textAllCaps="true"
+        android:text="@string/reset"
+        />
+
+    <ImageView
+        android:id="@+id/left_scale"
+        android:layout_height="0dp"
+        app:srcCompat="@drawable/scale_left_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/center_guideline"
+        android:layout_width="0dp"
+        android:layout_marginStart="@dimen/small_margin"
+        />
+
+    <ImageView
+        android:id="@+id/right_scale"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:srcCompat="@drawable/scale_right_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="@dimen/small_margin"
+        app:layout_constraintStart_toStartOf="@id/center_guideline"
+        />
+
+    <ImageView
+        android:id="@+id/plane"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/fake_plane_instrument_icon"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/center_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/guideline_horizontal"
+        app:layout_constraintGuide_percent="0.5"
+        android:orientation="horizontal"
+        />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--Need to nest OverlayView in FrameLayout because,
+    I need to capture content of card defined in ConstraintLayout, blur it and hide. -->
+    <kniezrec.com.flightinfo.cards.overlay.OverlayView
+        android:id="@+id/overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
+
+</FrameLayout>

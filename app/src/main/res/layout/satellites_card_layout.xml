@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_height"
+    >
+
+  <TextView
+      android:id="@+id/satellites_label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/text_color_dark"
+      android:textSize="@dimen/text_small"
+      android:layout_marginTop="@dimen/small_margin"
+      android:layout_marginStart="@dimen/small_margin"
+      android:layout_marginEnd="@dimen/small_margin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <com.github.mikephil.charting.charts.BarChart
+      android:id="@+id/satellites_chart"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/small_margin"
+      android:layout_marginEnd="@dimen/small_margin"
+      android:layout_marginBottom="@dimen/small_margin"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/satellites_label"
+      />
+
+  <kniezrec.com.flightinfo.cards.satellites.NoSatellitesFoundView
+      android:id="@+id/no_satellites_view"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      android:background="@color/card_background"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

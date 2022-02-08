@@ -1,0 +1,71 @@
+<resources>
+  <string name="app_name">Smart Flight</string>
+  <string name="dash" translatable="false">-</string>
+  <string name="N" translatable="false">N</string>
+  <string name="S" translatable="false">S</string>
+  <string name="E" translatable="false">E</string>
+  <string name="W" translatable="false">W</string>
+
+  <plurals name="connected_satellites">
+    <item quantity="one">Connected to %d satellite</item>
+    <item quantity="other">Connected to %d satellites</item>
+  </plurals>
+  <string name="wait_for_gps">Waiting for GPS signal…</string>
+  <string name="app_background_notification_title">Smart Flight is waiting for GPS signal</string>
+  <string name="app_background_notification_content">Tap to back to the app</string>
+  <string name="speed">Speed</string>
+  <string name="altitude">Altitude</string>
+  <string name="vertical_speed">Vertical Speed</string>
+  <string name="pressure">Pressure</string>
+  <string name="city">Closest city</string>
+  <string name="country">Country</string>
+  <string name="distance">Distance to the city</string>
+  <string name="time">Time</string>
+  <string name="tap_to_select_airport">Tap to select flight route</string>
+  <string name="distance_between_cities">Distance</string>
+  <string name="distance_to_destination">Distance to destination</string>
+  <string name="estimated_arrival">Arrival time</string>
+  <string name="find_city_info_label">Start typing city name or chose on map by long press</string>
+  <string name="confirm">Confirm</string>
+  <string name="city_name">City</string>
+  <string name="search">Search</string>
+  <string name="ok">OK</string>
+  <string name="yes">Yes</string>
+  <string name="no">No</string>
+  <string name="reset">Calibrate</string>
+  <string name="settings">Settings</string>
+  <string name="about">About</string>
+  <string name="pick_up_departure">Departure city</string>
+  <string name="pick_up_destination">Destination city</string>
+  <string name="enable_gps_title">Enable GPS</string>
+  <string name="channel_name">Location</string>
+  <string
+      name="enable_gsp_message">Your GPS seems to be disabled, do you want to enable it?</string>
+  <string name="cancel">Cancel</string>
+  <string name="no_city_found_title">Sorry</string>
+  <string name="no_city_body">No such city found in the Database</string>
+  <string name="more_than_one_city_title">More than one city found</string>
+  <string name="grant_permission">Grant Permission</string>
+  <string name="hide">Hide</string>
+  <string name="version">Version</string>
+  <string name="open_settings">Open settings</string>
+  <string name="max_zoom_tip">This is max zoom. Force bigger in settings.</string>
+  <string
+      name="permission_description">Application requires Location permission to work.\n Grant this permission to enable all cards</string>
+  <string
+      name="missing_sensor_content">This device doesn\'t have magnetic sensor. Hide this card?</string>
+  <string
+      name="missing_rotation_content">This device (or Android version) doesn\'t support rotation sensor. Hide this card?</string>
+  <string name="about_description">This application is not FAA certified. The author of this software is not liable for any injures or damages
+    caused by its use. Temperature and pressure outside are approximated. Your device must have enabled GPS.\n\nOpen Source used in applciation:\n
+        -Osmdroid\n
+        -Android SQLiteAssetHelper\n
+        -MPAndroidChart\n
+        -Material Dialogs\n
+        -LeakCanary
+    </string>
+  <string
+      name="contact"><![CDATA[<a href=\"mailto:kamil.niezrecki@gmail.com\">Send Feedback</a>]]></string>
+  <string
+      name="rate"><![CDATA[<a href="market://details?id=kniezrec.com.flightinfo">Rate in Google Play</a>]]></string>
+</resources>

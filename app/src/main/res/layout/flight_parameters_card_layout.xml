@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_height"
+    >
+
+  <TextView
+      android:id="@+id/speed_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/speed_label"
+      app:layout_constraintTop_toTopOf="@id/speed_label"
+      />
+
+  <TextView
+      android:id="@+id/speed_label"
+      style="@style/TextLabel"
+      android:layout_marginStart="@dimen/default_margin"
+      android:text="@string/speed"
+      app:layout_constraintBottom_toTopOf="@+id/vs_speed_label"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/vs_speed_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/vs_speed_label"
+      app:layout_constraintTop_toTopOf="@+id/vs_speed_label"
+      />
+
+  <TextView
+      android:id="@+id/vs_speed_label"
+      style="@style/TextLabel"
+      android:text="@string/vertical_speed"
+      app:layout_constraintBottom_toTopOf="@+id/alt_label"
+      app:layout_constraintStart_toStartOf="@+id/speed_label"
+      app:layout_constraintTop_toBottomOf="@+id/speed_label"
+      />
+
+  <TextView
+      android:id="@+id/alt_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/alt_label"
+      app:layout_constraintTop_toTopOf="@+id/alt_label"
+      />
+
+  <TextView
+      android:id="@+id/alt_label"
+      style="@style/TextLabel"
+      android:text="@string/altitude"
+      app:layout_constraintBottom_toTopOf="@+id/pressure_label"
+      app:layout_constraintStart_toStartOf="@+id/vs_speed_label"
+      app:layout_constraintTop_toBottomOf="@+id/vs_speed_label"
+      />
+
+  <TextView
+      android:id="@+id/pressure_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/pressure_label"
+      app:layout_constraintTop_toTopOf="@+id/pressure_label"
+      />
+
+  <TextView
+      android:id="@+id/pressure_label"
+      style="@style/TextLabel"
+      android:text="@string/pressure"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/alt_label"
+      app:layout_constraintTop_toBottomOf="@+id/alt_label"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

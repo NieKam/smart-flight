@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/card_height"
+    >
+
+  <TextView
+      android:id="@+id/city_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/city_label"
+      app:layout_constraintTop_toTopOf="@id/city_label"
+      />
+
+  <TextView
+      android:id="@+id/city_label"
+      style="@style/TextLabel"
+      android:layout_marginStart="@dimen/default_margin"
+      android:text="@string/city"
+      app:layout_constraintBottom_toTopOf="@+id/country_label"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <TextView
+      android:id="@+id/country_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/country_label"
+      app:layout_constraintTop_toTopOf="@+id/country_label"
+      />
+
+  <TextView
+      android:id="@+id/country_label"
+      style="@style/TextLabel"
+      android:text="@string/country"
+      app:layout_constraintBottom_toTopOf="@+id/distance_label"
+      app:layout_constraintStart_toStartOf="@+id/city_label"
+      app:layout_constraintTop_toBottomOf="@+id/city_label"
+      />
+
+  <TextView
+      android:id="@+id/distance_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/distance_label"
+      app:layout_constraintTop_toTopOf="@+id/distance_label"
+      />
+
+  <TextView
+      android:id="@+id/distance_label"
+      style="@style/TextLabel"
+      android:text="@string/distance"
+      app:layout_constraintBottom_toTopOf="@+id/time_label"
+      app:layout_constraintStart_toStartOf="@+id/country_label"
+      app:layout_constraintTop_toBottomOf="@+id/country_label"
+      />
+
+  <TextView
+      android:id="@+id/time_value_text"
+      style="@style/TextValue"
+      android:layout_marginStart="@dimen/small_margin"
+      android:text="@string/dash"
+      app:layout_constraintStart_toEndOf="@+id/time_label"
+      app:layout_constraintTop_toTopOf="@+id/time_label"
+      />
+
+  <TextView
+      android:id="@+id/time_label"
+      style="@style/TextLabel"
+      android:text="@string/time"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="@+id/distance_label"
+      app:layout_constraintTop_toBottomOf="@+id/distance_label"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

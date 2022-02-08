@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="show_notification">Pokazuj powiadomienia</string>
+  <string name="pref_category_global">Ogólne</string>
+  <string name="keep_screen_always_on">Nigdy nie wyłączaj ekranu</string>
+  <string name="force_portrait_mode">Zablokuj zmiane orientacji ekranu</string>
+  <string name="force_zoom_summary">Uwaga: Kiedy powiększenie przekroczy dopuszczalną wartość, pozoztałe niepowiększone obszary mogą być szare.</string>
+  <string name="force_zoom_title">Wymuś większe powiększenie mapy</string>
+  <string name="units">Jednostki</string>
+  <string name="altitude_unit">Jednostka wysokości</string>
+  <string name="vertical_speed_unit">Jednostka prędkości pionowej</string>
+  <string name="pressure_unit">Jednostka ciśnienia</string>
+  <string name="speed_unit">Jednostka prędkości</string>
+  <string name="distance_unit">Jednostka odległości</string>
+
+  <string-array name="altitude_units">
+    <item>Metry (m)</item>
+    <item>Stopy (ft)</item>
+  </string-array>
+  <string-array name="speed_units">
+    <item>Kilometery na godzine (kmh)</item>
+    <item>Mile na godzine (mph)</item>
+    <item>Węzły (kt)</item>
+  </string-array>
+  <string-array name="distance_units">
+    <item>Kilometry (km)</item>
+    <item>Mile (mi)</item>
+  </string-array>
+  <string-array name="vertical_speed_units">
+    <item>Metry na sekunde (m/s)</item>
+    <item>Metery na minute (m/min)</item>
+    <item>Stopy na minute (ft/min)</item>
+  </string-array>
+  <string-array name="pressure_units">
+    <item>Milibar (mbar)</item>
+    <item>Cal rtęci (inHg)</item>
+  </string-array>
+  <string-array name="unit_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+</resources>

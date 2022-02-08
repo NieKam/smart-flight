@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" package="kniezrec.com.flightinfo">
+
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+  <application
+      android:name=".startup.SmartFlightApplication"
+      android:allowBackup="true"
+      android:icon="@mipmap/ic_launcher"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/ic_launcher_round"
+      android:supportsRtl="true"
+      android:theme="@style/AppTheme"
+      tools:ignore="GoogleAppIndexingWarning"
+      >
+    <activity
+        android:name=".MainActivity"
+        android:configChanges="orientation|screenSize"
+        android:launchMode="singleTask"
+        android:exported="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        >
+
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+
+      </intent-filter>
+    </activity>
+
+    <service
+        android:name=".services.SensorService"
+        android:enabled="true"
+        android:exported="false"
+        />
+    <service
+        android:name=".services.LocationService"
+        android:enabled="true"
+        android:exported="false"
+        />
+
+    <receiver
+        android:name=".common.NotificationBroadcastReceiver"
+        android:exported="false"
+        />
+
+    <service
+        android:name=".services.FindCityService"
+        android:enabled="true"
+        android:exported="false"
+        />
+
+    <activity
+        android:name=".cards.route.FindCityActivity"
+        android:configChanges="orientation|screenSize"
+        />
+
+    <activity
+        android:name=".settings.SettingsActivity"
+        android:configChanges="orientation|screenSize"
+        android:theme="@style/PreferenceScreen"
+        />
+
+  </application>
+
+</manifest>

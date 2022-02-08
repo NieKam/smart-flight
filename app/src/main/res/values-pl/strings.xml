@@ -1,0 +1,71 @@
+<resources>
+  <string name="app_name">Smart Flight</string>
+  <plurals name="connected_satellites">
+    <item quantity="one">Podłączony do %d satelity</item>
+    <item quantity="few">Podłączony do %d satelit</item>
+    <item quantity="many">Podłączony do %d satelit</item>
+  </plurals>
+  <string name="wait_for_gps">Oczekiwanie na sygnał GPS…</string>
+  <string name="app_background_notification_title">Smart Flight nadal szuka sygnału GPS</string>
+  <string name="app_background_notification_content">Dotknij aby wrócić do aplikacji</string>
+  <string name="speed">Prędkość</string>
+  <string name="altitude">Wysokość</string>
+  <string name="vertical_speed">Prędkość pionowa</string>
+  <string name="pressure">Ciśnienie</string>
+  <string name="city">Najbliższe miasto</string>
+  <string name="country">Kraj</string>
+  <string name="distance">Odległość do miasta</string>
+  <string name="time">Godzina</string>
+  <string name="tap_to_select_airport">Dotknij aby wyznaczyć trasę</string>
+  <string name="distance_between_cities">Odległość</string>
+  <string name="distance_to_destination">Dystans do celu</string>
+  <string name="estimated_arrival">Godzina przybycia</string>
+  <string name="pick_up_departure">Lotnisko startowe</string>
+  <string name="pick_up_destination">Lotnisko docelowe</string>
+  <string name="reset">Kalibruj</string>
+  <string name="channel_name">Lokalizacja</string>
+  <string
+      name="find_city_info_label">Wpisz nazwę miasta lub wybierz z mapy dłuższym przytrzymaniem palca.</string>
+  <string name="confirm">Potwierdź</string>
+  <string name="city_name">Miasto</string>
+  <string name="search">Szukaj</string>
+  <string name="ok">OK</string>
+  <string name="yes">Tak</string>
+  <string name="no">Nie</string>
+  <string name="settings">Ustawienia</string>
+  <string name="about">O aplikacji</string>
+  <string name="enable_gps_title">Włącz GPS</string>
+  <string
+      name="enable_gsp_message">Lokalizacja w telefonie jest wyłączona, czy chcesz ją włączyć?</string>
+  <string name="cancel">Anuluj</string>
+  <string name="no_city_found_title">Niestety</string>
+  <string name="no_city_body">Podane miasto nie istnieje w bazie danych</string>
+  <string name="more_than_one_city_title">Więcej niż jeden wynik</string>
+  <string name="grant_permission">Przyznaj uprawnienia</string>
+  <string name="hide">Ukryj</string>
+  <string name="version">Wersja</string>
+  <string name="open_settings">Otwórz ustawienia</string>
+  <string name="max_zoom_tip">To jest maksymalne powiększenie. Wymuś większe w ustawieniach.</string>
+  <string
+      name="permission_description">Aplikacja do poprawnego działania wymaga uprawnień lokalizacji.\n Przyznaj uprawnienia, aby wyświetlić wszystkie karty</string>
+  <string
+      name="missing_sensor_content">To urządzenie nie wspiera funkcji kompasu, ukryć kartę?</string>
+  <string
+      name="missing_rotation_content">To urządzenie lub wersja systemu android nie wspiera funkcji detekcji rotacji, ukryć kartę?</string>
+
+  <string name="about_description">Aplikacja nie jest certyfikowana przez żaden organ nadzoru lotniczego. Autor nie ponosi odpowiedzialnośći za szkody wyrządzone przez użycie aplikacji.
+         Temperatura i ciśnienie na zewnątrz (na wysokości) są wartościami oszacowanymi. Do poprawnego działania wymagany jest włączony czujnik GPS.\n\n
+         Wykorzystane projekty Open Source:\n
+        -Osmdroid\n
+        -Osmdroid bonuspack\n
+        -Android SQLiteAssetHelper\n
+        -MPAndroidChart\n
+        -LeakCanary \n\n
+        -Material Dialogs\n\n
+    </string>
+
+  <string
+      name="contact"><![CDATA[<a href=\"mailto:kamil.niezrecki@gmail.com\">Wyślij sugestie</a>]]></string>
+  <string
+      name="rate"><![CDATA[<a href="market://details?id=kniezrec.com.flightinfo">Oceń w Google Play</a>]]></string>
+</resources>

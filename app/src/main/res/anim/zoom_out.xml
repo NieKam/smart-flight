@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<set
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true"
+    android:duration="@integer/transition_duration"
+    >
+
+  <scale
+      android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+      android:duration="@integer/transition_duration"
+      android:pivotX="50%"
+      android:pivotY="50%"
+      android:fromXScale="1"
+      android:fromYScale="1"
+      android:toXScale="@dimen/transition_zoom_out_max"
+      android:toYScale="@dimen/transition_zoom_out_max"
+      />
+
+</set>

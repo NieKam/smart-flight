@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    tools:context="kniezrec.com.flightinfo.MainActivity"
+    style="@style/MainScreen"
+    >
+
+  <kniezrec.com.flightinfo.cards.adapter.CardViewContainer
+      android:id="@+id/card_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/card_margin"
+      />
+
+</ScrollView>

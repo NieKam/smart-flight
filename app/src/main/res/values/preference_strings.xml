@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="show_notification">Show notification</string>
+  <string name="pref_category_global">General</string>
+  <string name="keep_screen_always_on">Keep screen always on</string>
+  <string name="force_portrait_mode">Force portrait orientation mode</string>
+  <string name="force_zoom_summary">Warning: When zoom is higher than available for map other not zoomed parts of map might be greyed.</string>
+  <string name="force_zoom_title">Force bigger map zoom</string>
+  <string name="units">Units</string>
+  <string name="altitude_unit">Altitude Unit</string>
+  <string name="vertical_speed_unit">Vertical Speed Unit</string>
+  <string name="pressure_unit">Pressure Unit</string>
+  <string name="speed_unit">Speed Unit</string>
+  <string name="distance_unit">Distance Unit</string>
+
+  <string-array name="altitude_units">
+    <item>Meters (m)</item>
+    <item>Feet (ft)</item>
+  </string-array>
+  <string-array name="speed_units">
+    <item>Kilometers per hour (kmh)</item>
+    <item>Miles per hour (mph)</item>
+    <item>Knots (kt)</item>
+  </string-array>
+  <string-array name="distance_units">
+    <item>Kilometers (km)</item>
+    <item>Miles (mi)</item>
+  </string-array>
+  <string-array name="vertical_speed_units">
+    <item>Meters per second (m/s)</item>
+    <item>Meters per minute (m/min)</item>
+    <item>Feet per minute (ft/min)</item>
+  </string-array>
+  <string-array name="pressure_units">
+    <item>Millibar (mbar)</item>
+    <item>Inch of mercury (inHg)</item>
+  </string-array>
+  <string-array name="unit_values">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+  </string-array>
+</resources>

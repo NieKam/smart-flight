@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mv_root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/card_height"
+    >
+
+  <kniezrec.com.flightinfo.base.BaseMapView
+      android:id="@+id/mapView"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  <ImageView
+      android:id="@+id/btnResize"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/default_margin"
+      android:layout_marginBottom="@dimen/default_margin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:srcCompat="@drawable/ic_expand"
+      />
+
+  <ImageView
+      android:id="@+id/btnGoToMyLocation"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/default_margin"
+      android:layout_marginTop="@dimen/default_margin"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/drawing_pin_icon"
+      />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
