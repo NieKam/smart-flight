@@ -13,10 +13,7 @@ class Constants {
 
       /** Results codes */
     const val ERROR = -1
-    const val RESULTS_OK = 0
 
-    /** Actions */
-    const val COPY_MAP_ACTION = "copy_map_action"
     const val APP_LIFECYCLE_ACTION = "app_lifecycle_action"
     const val NOTIFICATION_DISMISSED_ACTION = "notification_dismissed"
     const val PICK_CITY_ACTION = "pick_city_action"
@@ -27,7 +24,6 @@ class Constants {
 
     /** Extra Keys */
     const val ON_APP_FOREGROUND_KEY = "on_foreground"
-    const val RESULT_RECEIVER_KEY = "results_receiver_key"
     const val CITY_EXTRA_KEY = "city_extra_key"
     const val TITLE_EXTRA_KEY = "title_extra_key"
     const val PERMISSION = "permission"
@@ -38,8 +34,6 @@ class Constants {
 
     /** Others */
     const val DEGREE_CHAR = 0x00B0.toChar()
-    const val PICK_CITY_A_REQUEST_CODE = 101
-    const val PICK_CITY_B_REQUEST_CODE = 102
 
     /** Settings */
     const val DEFAULT_VALUE = "1"

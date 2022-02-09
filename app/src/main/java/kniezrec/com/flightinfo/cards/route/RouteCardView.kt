@@ -6,6 +6,9 @@ import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.transition.AutoTransition
@@ -14,7 +17,6 @@ import androidx.transition.TransitionSet
 import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardView
 import kniezrec.com.flightinfo.common.*
-import kniezrec.com.flightinfo.databinding.MapCardLayoutBinding
 import kniezrec.com.flightinfo.databinding.RouteCardLayoutBinding
 import kniezrec.com.flightinfo.db.CitiesDataSource
 import kniezrec.com.flightinfo.db.City
@@ -48,184 +50,195 @@ class RouteCardView @JvmOverloads constructor(
 ) : ServiceBasedCardView<RouteCardViewPresenter>(context, attrs, defStyleAttr),
     RouteCardViewPresenter.ViewContract {
 
-  private val mConstraintSet = ConstraintSet()
-  private val mBinding : RouteCardLayoutBinding =
-    RouteCardLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private val mConstraintSet = ConstraintSet()
+    private val mBinding: RouteCardLayoutBinding =
+        RouteCardLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-  init {
-    mBinding.chooseCityA.setOnClickListener { mPresenter.onButtonAClicked() }
-    mBinding.chooseCityB.setOnClickListener { mPresenter.onButtonBClicked() }
-    mBinding.cityA.apply {
-      setOnLongClickListener { mPresenter.onLongCityAClicked() }
-      setOnClickListener { mPresenter.onButtonAClicked() }
+    private val mPickCityA: ActivityResultLauncher<Intent>
+    private val mPickCityB: ActivityResultLauncher<Intent>
+
+    init {
+        mBinding.chooseCityA.setOnClickListener { mPresenter.onButtonAClicked() }
+        mBinding.chooseCityB.setOnClickListener { mPresenter.onButtonBClicked() }
+        mBinding.cityA.apply {
+            setOnLongClickListener { mPresenter.onLongCityAClicked() }
+            setOnClickListener { mPresenter.onButtonAClicked() }
+        }
+
+        mBinding.cityB.apply {
+            setOnLongClickListener { mPresenter.onLongCityBClicked() }
+            setOnClickListener { mPresenter.onButtonBClicked() }
+        }
+
+        mBinding.deleteRouteBtn.setOnClickListener { mPresenter.onDeleteButtonClicked() }
+        mPickCityA = (context as AppCompatActivity)
+            .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+                mPresenter.onCityAResultsReceived(res)
+            }
+        mPickCityB = context
+            .registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { res ->
+                mPresenter.onCityBResultsReceived(res)
+            }
     }
 
-    mBinding.cityB.apply {
-      setOnLongClickListener { mPresenter.onLongCityBClicked() }
-      setOnClickListener { mPresenter.onButtonBClicked() }
+    override fun initPresenter(): RouteCardViewPresenter {
+        return RouteCardViewPresenter(FlightAppPreferences(context), CitiesDataSource(context))
     }
 
-    mBinding.deleteRouteBtn.setOnClickListener { mPresenter.onDeleteButtonClicked() }
-  }
+    override fun showCityA(city: String) {
+        mBinding.cityA.apply {
+            text = city
+            visibility = View.VISIBLE
+        }
 
-  override fun initPresenter(): RouteCardViewPresenter {
-    return RouteCardViewPresenter(FlightAppPreferences(context), CitiesDataSource(context))
-  }
-
-  override fun startFindCityActivity(title: Int, requestCode: Int, city: City?) {
-
-    val intent = Intent(context, FindCityActivity::class.java).apply {
-      action = Constants.PICK_CITY_ACTION
-      putExtra(Constants.TITLE_EXTRA_KEY, title)
+        mBinding.chooseCityA.visibility = View.INVISIBLE
     }
 
-    if (city != null) {
-      intent.putExtra(Constants.CITY_EXTRA_KEY, city)
+    override fun showCityB(city: String) {
+        mBinding.cityB.apply {
+            text = city
+            visibility = View.VISIBLE
+        }
+
+        mBinding.chooseCityB.visibility = View.INVISIBLE
     }
 
-    context.findContextOfType(Activity::class.java)?.let {
-      it.startActivityForResult(intent, requestCode)
-      Navigation.enterZoomOutFadeIn(it)
-    }
-  }
-
-  override fun showCityA(city: String) {
-    mBinding.cityA.apply {
-      text = city
-      visibility = View.VISIBLE
+    override fun setDistanceBetweenCities(distance: String) {
+        mBinding.distanceBetweenCitiesValue.text = distance
     }
 
-    mBinding.chooseCityA.visibility = View.INVISIBLE
-  }
-
-  override fun showCityB(city: String) {
-    mBinding.cityB.apply {
-      text = city
-      visibility = View.VISIBLE
+    override fun setRemainingRouteDistance(distanceToB: String) {
+        mBinding.distanceToBValue.text = distanceToB
     }
 
-    mBinding.chooseCityB.visibility = View.INVISIBLE
-  }
-
-  override fun setDistanceBetweenCities(distance: String) {
-    mBinding.distanceBetweenCitiesValue.text = distance
-  }
-
-  override fun setRemainingRouteDistance(distanceToB: String) {
-    mBinding.distanceToBValue.text = distanceToB
-  }
-
-  override fun setArrivalTime(arrivalTime: String) {
-    mBinding.timeToBValue.text = arrivalTime
-  }
-
-  override fun removeCityAName() {
-    applyTransitionAnimation()
-    mBinding.cityA.apply {
-      text = String.empty()
-      visibility = View.GONE
+    override fun setArrivalTime(arrivalTime: String) {
+        mBinding.timeToBValue.text = arrivalTime
     }
 
-    mBinding.chooseCityA.visibility = View.VISIBLE
+    override fun removeCityAName() {
+        applyTransitionAnimation()
+        mBinding.cityA.apply {
+            text = String.empty()
+            visibility = View.GONE
+        }
 
-    // if B city is visible button should be small and on the top
-    adjustCityAButton(mBinding.cityB.visibility != View.VISIBLE)
-  }
+        mBinding.chooseCityA.visibility = View.VISIBLE
 
-  override fun removeCityBName() {
-    applyTransitionAnimation()
-    mBinding.cityB.apply {
-      visibility = View.GONE
-      text = String.empty()
+        // if B city is visible button should be small and on the top
+        adjustCityAButton(mBinding.cityB.visibility != View.VISIBLE)
     }
 
-    mBinding.chooseCityB.visibility = View.VISIBLE
-  }
+    override fun removeCityBName() {
+        applyTransitionAnimation()
+        mBinding.cityB.apply {
+            visibility = View.GONE
+            text = String.empty()
+        }
 
-  override fun showRouteDetailsLabels() {
-    Timber.i("Show all labels")
-    mConstraintSet.clone(mBinding.rcvRootLayout)
-
-    // Show all views related to info labels
-    for (id in LABELS_IDS) {
-      mConstraintSet.setVisibility(id, View.VISIBLE)
+        mBinding.chooseCityB.visibility = View.VISIBLE
     }
 
-    // Hide top label we don't need it anymore
-    mConstraintSet.apply {
-      setVisibility(R.id.label, View.GONE)
-      setVerticalBias(mBinding.cityA.id, CITY_LABEL_TOP_BIAS)
-      setVerticalBias(mBinding.cityB.id, CITY_LABEL_TOP_BIAS)
-      applyTo(mBinding.rcvRootLayout)
+    override fun showRouteDetailsLabels() {
+        Timber.i("Show all labels")
+        mConstraintSet.clone(mBinding.rcvRootLayout)
+
+        // Show all views related to info labels
+        for (id in LABELS_IDS) {
+            mConstraintSet.setVisibility(id, View.VISIBLE)
+        }
+
+        // Hide top label we don't need it anymore
+        mConstraintSet.apply {
+            setVisibility(R.id.label, View.GONE)
+            setVerticalBias(mBinding.cityA.id, CITY_LABEL_TOP_BIAS)
+            setVerticalBias(mBinding.cityB.id, CITY_LABEL_TOP_BIAS)
+            applyTo(mBinding.rcvRootLayout)
+        }
+
+        // City A button is still visible minimize it
+        adjustCityAButton(false)
     }
 
-    // City A button is still visible minimize it
-    adjustCityAButton(false)
-  }
+    override fun hideAllLabels() {
+        applyTransitionAnimation()
 
-  override fun hideAllLabels() {
-    applyTransitionAnimation()
+        mConstraintSet.clone(mBinding.rcvRootLayout)
+        for (id in LABELS_IDS) {
+            mConstraintSet.setVisibility(id, View.GONE)
+        }
 
-    mConstraintSet.clone(mBinding.rcvRootLayout)
-    for (id in LABELS_IDS) {
-      mConstraintSet.setVisibility(id, View.GONE)
+        // Move label back to default position
+        mConstraintSet.apply {
+            setVerticalBias(mBinding.cityA.id, CITY_LABEL_DEF_BIAS)
+            setVerticalBias(mBinding.cityB.id, CITY_LABEL_DEF_BIAS)
+            // Restore center label
+            setVisibility(R.id.label, View.VISIBLE)
+            applyTo(mBinding.rcvRootLayout)
+        }
+
+        adjustCityAButton(true)
     }
 
-    // Move label back to default position
-    mConstraintSet.apply {
-      setVerticalBias(mBinding.cityA.id, CITY_LABEL_DEF_BIAS)
-      setVerticalBias(mBinding.cityB.id, CITY_LABEL_DEF_BIAS)
-      // Restore center label
-      setVisibility(R.id.label, View.VISIBLE)
-      applyTo(mBinding.rcvRootLayout)
+    override fun needsLocationPermission(): Boolean {
+        return true
     }
 
-    adjustCityAButton(true)
-  }
-
-  override fun needsLocationPermission(): Boolean {
-    return true
-  }
-
-  override fun notifyRouteChanged(intent: Intent) {
-    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
-  }
-
-  fun onPickCityResults(requestCode: Int, data: Intent) {
-    val city: City = requireNotNull(data.getParcelableExtra(Constants.CITY_EXTRA_KEY)) as City
-    mPresenter.onCityResultsReceived(requestCode, city)
-  }
-
-  private fun adjustCityAButton(restoreToDefaultSize: Boolean) {
-    if (mBinding.chooseCityA.visibility != View.VISIBLE) {
-      return
+    override fun notifyRouteChanged(intent: Intent) {
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 
-    mConstraintSet.clone(mBinding.rcvRootLayout)
-    val bias: Float
-    val iconSize: Int
-
-    if (restoreToDefaultSize) {
-      iconSize = resources.getDimensionPixelSize(R.dimen.plane_icon_size)
-      bias = PLANE_ICON_DEF_BIAS
-    } else {
-      iconSize = resources.getDimensionPixelSize(R.dimen.plane_icon_size_small)
-      bias = PLANE_ICON_TOP_BIAS
+    override fun pickCityA(title: Int, city: City?) {
+        val intent = getPickCityIntent(title, city)
+        mPickCityA.launch(intent)
+        Navigation.enterZoomOutFadeIn(context as Activity)
     }
 
-    mConstraintSet.apply {
-      constrainHeight(mBinding.chooseCityA.id, iconSize)
-      constrainWidth(mBinding.chooseCityA.id, iconSize)
-      setVerticalBias(mBinding.chooseCityA.id, bias)
-      applyTo(mBinding.rcvRootLayout)
+    override fun pickCityB(title: Int, city: City?) {
+        val intent = getPickCityIntent(title, city)
+        mPickCityB.launch(intent)
+        Navigation.enterZoomOutFadeIn(context as Activity)
     }
-  }
 
-  private fun applyTransitionAnimation() {
-    AutoTransition().let {
-      it.duration = DURATION_MS
-      it.ordering = TransitionSet.ORDERING_TOGETHER
-      TransitionManager.beginDelayedTransition(mBinding.rcvRootLayout, it)
+    private fun getPickCityIntent(title: Int, city: City?): Intent {
+        return Intent(context, FindCityActivity::class.java).apply {
+            action = Constants.PICK_CITY_ACTION
+            putExtra(Constants.TITLE_EXTRA_KEY, title)
+            city?.let {
+                putExtra(Constants.CITY_EXTRA_KEY, it)
+            }
+        }
     }
-  }
+
+    private fun adjustCityAButton(restoreToDefaultSize: Boolean) {
+        if (mBinding.chooseCityA.visibility != View.VISIBLE) {
+            return
+        }
+
+        mConstraintSet.clone(mBinding.rcvRootLayout)
+        val bias: Float
+        val iconSize: Int
+
+        if (restoreToDefaultSize) {
+            iconSize = resources.getDimensionPixelSize(R.dimen.plane_icon_size)
+            bias = PLANE_ICON_DEF_BIAS
+        } else {
+            iconSize = resources.getDimensionPixelSize(R.dimen.plane_icon_size_small)
+            bias = PLANE_ICON_TOP_BIAS
+        }
+
+        mConstraintSet.apply {
+            constrainHeight(mBinding.chooseCityA.id, iconSize)
+            constrainWidth(mBinding.chooseCityA.id, iconSize)
+            setVerticalBias(mBinding.chooseCityA.id, bias)
+            applyTo(mBinding.rcvRootLayout)
+        }
+    }
+
+    private fun applyTransitionAnimation() {
+        AutoTransition().let {
+            it.duration = DURATION_MS
+            it.ordering = TransitionSet.ORDERING_TOGETHER
+            TransitionManager.beginDelayedTransition(mBinding.rcvRootLayout, it)
+        }
+    }
 }

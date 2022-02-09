@@ -1,6 +1,5 @@
 package kniezrec.com.flightinfo.cards.gps
 
-import android.location.GpsSatellite
 import android.location.Location
 import kniezrec.com.flightinfo.avionic.Speed
 import kniezrec.com.flightinfo.avionic.calculators.Altitude
@@ -9,6 +8,7 @@ import kniezrec.com.flightinfo.avionic.calculators.VerticalSpeedCalculator
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
 import kniezrec.com.flightinfo.services.LocationService
 import kniezrec.com.flightinfo.services.SensorService
+import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import timber.log.Timber
 
@@ -27,6 +27,9 @@ class FlightParametersCardViewPresenter(private val mPreferences: FlightAppPrefe
     }
 
     private val mVSCalculator = VerticalSpeedCalculator()
+    private val mLocationCallback : LocationUpdateCallback = {
+        handleLocationChange(it)
+    }
 
     private var mIsBoundToLocationService = false
     private var mIsBoundToSensorService = false
@@ -44,7 +47,7 @@ class FlightParametersCardViewPresenter(private val mPreferences: FlightAppPrefe
     override fun onViewDetached(viewContract: ViewContract) {
         super.onViewDetached(viewContract)
         if (mIsBoundToLocationService) {
-            mLocationService?.removeLocationCallbackClient(mLocationCallbackLazy)
+            mLocationService?.removeLocationCallbackClient(mLocationCallback)
             viewContract.disconnectFromLocationService()
         }
 
@@ -58,7 +61,7 @@ class FlightParametersCardViewPresenter(private val mPreferences: FlightAppPrefe
         Timber.i("Connected to LocationService")
         mIsBoundToLocationService = true
         mLocationService = service?.also {
-            it.addLocationCallbackClient(mLocationCallbackLazy)
+            it.addLocationCallbackClient(mLocationCallback)
         }
     }
 
@@ -108,15 +111,4 @@ class FlightParametersCardViewPresenter(private val mPreferences: FlightAppPrefe
             }
         }
     }
-
-    private val mLocationCallbackLazy by lazy {
-        object : LocationService.LocationCallback {
-            override fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?) {}
-
-            override fun onLocationChanged(location: Location) {
-                handleLocationChange(location)
-            }
-        }
-    }
-
 }

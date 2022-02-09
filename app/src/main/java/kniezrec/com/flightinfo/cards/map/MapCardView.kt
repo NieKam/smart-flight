@@ -6,15 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
-import android.os.ResultReceiver
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.AnimationUtils
-import android.widget.ScrollView
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -38,6 +36,7 @@ import org.osmdroid.events.ZoomEvent
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
+import timber.log.Timber
 import java.io.File
 
 /**
@@ -132,7 +131,7 @@ class MapCardView @JvmOverloads constructor(
               setBackgroundColor(R.color.purple_dark)
               setAction(R.string.settings) {
                 Navigation.goToSettings(context, highlightCustomSettings = true)
-                Handler().postDelayed({ mSnackBar?.dismiss() }, 1000) // Hide in delay to avoid animation issues.
+                Handler(Looper.getMainLooper()).postDelayed({ mSnackBar?.dismiss() }, 1000) // Hide in delay to avoid animation issues.
               }
             }.also {
               it.show()
@@ -231,7 +230,9 @@ class MapCardView @JvmOverloads constructor(
   override fun copyMap(callback: MapCopiedCallback) {
     val mapHelper = MapHelper(context)
     CoroutineScope(Dispatchers.Main).launch {
-      val res = async { mapHelper.doCopy() }
+      val res = async(Dispatchers.IO) {
+        mapHelper.doCopy()
+      }
       callback.invoke(res.await())
     }
   }

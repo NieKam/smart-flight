@@ -5,6 +5,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorManager
 import kniezrec.com.flightinfo.avionic.Course
 import kotlin.math.abs
+import kotlin.math.roundToInt
 
 /**
  * Copyright by Kamil Niezrecki
@@ -57,7 +58,7 @@ class CourseCalculator {
         var azimuth = Math.toDegrees(orientation[0].toDouble())
         azimuth = mAverage.addAndGetAverage(azimuth)
 
-        val azimuthRound = Math.round((azimuth)).toInt()
+        val azimuthRound = (azimuth).roundToInt()
         val azimuthNormalized = (azimuthRound + 360) % 360
 
         val abbreviation = getAbbreviation(azimuthNormalized)

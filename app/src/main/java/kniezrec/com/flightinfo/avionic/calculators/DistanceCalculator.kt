@@ -47,7 +47,7 @@ class DistanceCalculator {
           city.longitude)
     }
 
-    fun getDistance(
+    private fun getDistance(
         distanceUnit: String, latitudeA: Double, longitudeA: Double,
         latitudeB: Double, longitudeB: Double
     ): String {
@@ -101,19 +101,17 @@ class DistanceCalculator {
       val minute = TimeUnit.SECONDS.toMinutes(timeInSeconds) - TimeUnit.SECONDS.toHours(
           timeInSeconds) * 60
 
-      val remainingTime: String
-
-      remainingTime = if (timeInSeconds <= TimeUnit.DAYS.toSeconds(
-              1
-          )) {
-        if (hour == 0L) {
-          "${minute}m"
+        val remainingTime: String = if (timeInSeconds <= TimeUnit.DAYS.toSeconds(
+                1
+            )) {
+          if (hour == 0L) {
+            "${minute}m"
+          } else {
+            "${hour}h ${minute}min"
+          }
         } else {
-          "${hour}h ${minute}min"
+          TOO_MANY_HOURS_TO_DISPLAY
         }
-      } else {
-        TOO_MANY_HOURS_TO_DISPLAY
-      }
 
       val timeCalculator = TimeCalculator()
       val currentTimeInDestination = timeCalculator.getEstimatedArrivalTime(city, timeInSeconds)

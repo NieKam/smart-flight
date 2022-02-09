@@ -3,7 +3,6 @@ package kniezrec.com.flightinfo.cards.horizon
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.OnClickListener
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -12,7 +11,6 @@ import kniezrec.com.flightinfo.cards.base.CanChangeVisibility
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardView
 import kniezrec.com.flightinfo.cards.overlay.BlurUtils
 import kniezrec.com.flightinfo.databinding.HorizonCardLayoutBinding
-import kniezrec.com.flightinfo.databinding.MapCardLayoutBinding
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 
 /**

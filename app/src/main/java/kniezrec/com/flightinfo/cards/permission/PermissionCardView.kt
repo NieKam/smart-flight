@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import androidx.cardview.widget.CardView
 import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.common.findContextOfType
-import kniezrec.com.flightinfo.databinding.MapCardLayoutBinding
 import kniezrec.com.flightinfo.databinding.PermissionViewBinding
 
 class PermissionCardView @JvmOverloads constructor(

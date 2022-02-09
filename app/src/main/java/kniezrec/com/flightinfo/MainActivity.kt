@@ -1,14 +1,12 @@
 package kniezrec.com.flightinfo
 
 import android.content.Context
-import android.content.Intent
 import android.location.LocationManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
-import android.widget.ScrollView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kniezrec.com.flightinfo.base.BaseActivity
 import kniezrec.com.flightinfo.cards.base.ResizableActivity
@@ -132,11 +130,6 @@ class MainActivity : BaseActivity(), ResizableActivity, MainActivityPresenter.Vi
                 permission
             )
         )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        mBinding.mainContentLayout.cardContainer.onActivityResultsReceived(requestCode, resultCode, data)
     }
 
     override fun scrollToBottom() {

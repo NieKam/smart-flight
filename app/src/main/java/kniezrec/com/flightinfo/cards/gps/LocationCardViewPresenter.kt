@@ -1,8 +1,8 @@
 package kniezrec.com.flightinfo.cards.gps
 
-import android.location.GpsSatellite
 import android.location.Location
 import android.os.Handler
+import android.os.Looper
 import android.os.Messenger
 import kniezrec.com.flightinfo.avionic.calculators.DistanceCalculator
 import kniezrec.com.flightinfo.avionic.calculators.TimeCalculator
@@ -11,6 +11,7 @@ import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.db.City
 import kniezrec.com.flightinfo.services.FindCityService
 import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import timber.log.Timber
 
@@ -29,7 +30,7 @@ class LocationCardViewPresenter(private val mPreferences: FlightAppPreferences) 
     }
 
     private val mHandlerCallback = Handler.Callback { msg ->
-        if (msg?.what == FindCityService.Contract.MSG_CITY_FOUND && msg.obj != null) {
+        if (msg.what == FindCityService.Contract.MSG_CITY_FOUND && msg.obj != null) {
             handleCityFound(msg.obj as City)
             true
         } else {
@@ -37,8 +38,11 @@ class LocationCardViewPresenter(private val mPreferences: FlightAppPreferences) 
         }
     }
 
-    private val mIncomingMessenger = Messenger(Handler(mHandlerCallback))
+    private val mIncomingMessenger = Messenger(Handler(Looper.getMainLooper(), mHandlerCallback))
     private val mTimezoneCalculator = TimeCalculator()
+    private val mLocationCallback : LocationUpdateCallback = {
+        sendFindCityMessage(it)
+    }
 
     private var mIsBoundToFindCityService = false
     private var mIsBoundToLocationService = false
@@ -60,7 +64,7 @@ class LocationCardViewPresenter(private val mPreferences: FlightAppPreferences) 
         }
 
         if (mIsBoundToLocationService) {
-            mLocationService?.removeLocationCallbackClient(mLocationCallbackLazy)
+            mLocationService?.removeLocationCallbackClient(mLocationCallback)
             viewContract.disconnectFromLocationService()
         }
     }
@@ -84,7 +88,7 @@ class LocationCardViewPresenter(private val mPreferences: FlightAppPreferences) 
         Timber.i("Connected to LocationService")
         mIsBoundToLocationService = true
         mLocationService = service?.also {
-            it.addLocationCallbackClient(mLocationCallbackLazy)
+            it.addLocationCallbackClient(mLocationCallback)
         }
     }
 
@@ -113,15 +117,5 @@ class LocationCardViewPresenter(private val mPreferences: FlightAppPreferences) 
             lastLocation,
             city
         )
-    }
-
-    private val mLocationCallbackLazy by lazy {
-        object : LocationService.LocationCallback {
-            override fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?) {}
-
-            override fun onLocationChanged(location: Location) {
-                sendFindCityMessage(location)
-            }
-        }
     }
 }

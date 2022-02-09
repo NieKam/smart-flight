@@ -1,9 +1,10 @@
 package kniezrec.com.flightinfo.cards.route
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
-import android.location.GpsSatellite
 import android.location.Location
+import androidx.activity.result.ActivityResult
 import androidx.annotation.StringRes
 import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.avionic.calculators.DistanceCalculator
@@ -13,6 +14,7 @@ import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.db.CitiesDataSource
 import kniezrec.com.flightinfo.db.City
 import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,13 +45,18 @@ class RouteCardViewPresenter(
     fun showRouteDetailsLabels()
     fun hideAllLabels()
     fun notifyRouteChanged(intent: Intent)
-    fun startFindCityActivity(@StringRes title: Int, requestCode: Int, city: City?)
+    fun pickCityA(@StringRes title: Int, city: City?)
+    fun pickCityB(@StringRes title: Int, city: City?)
   }
 
   private val mChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
     if (key == Constants.DISTANCE_UNIT_PREFERENCE_KEY) {
       updateDistanceBetweenAB()
     }
+  }
+
+  private val mLocationCallback : LocationUpdateCallback = {
+    updateRemainingRouteInfo(it)
   }
 
   private var mIsBoundToLocationService = false
@@ -67,7 +74,7 @@ class RouteCardViewPresenter(
   override fun onViewDetached(viewContract: ViewContract) {
     super.onViewDetached(viewContract)
     if (mIsBoundToLocationService) {
-      mLocationService?.removeLocationCallbackClient(mLocationCallbackLazy)
+      mLocationService?.removeLocationCallbackClient(mLocationCallback)
       viewContract.disconnectFromLocationService()
     }
 
@@ -75,27 +82,38 @@ class RouteCardViewPresenter(
   }
 
   fun onButtonAClicked() {
-    requiredNotNullView.startFindCityActivity(
+    requiredNotNullView.pickCityA(
         R.string.pick_up_departure,
-        Constants.PICK_CITY_A_REQUEST_CODE,
         mCityA
     )
   }
 
   fun onButtonBClicked() {
-    requiredNotNullView.startFindCityActivity(
-        R.string.pick_up_destination,
-        Constants.PICK_CITY_B_REQUEST_CODE,
-        mCityB
+    requiredNotNullView.pickCityB(
+      R.string.pick_up_destination,
+      mCityB
     )
   }
 
-  fun onCityResultsReceived(requestCode: Int, city: City) {
-    if (requestCode == Constants.PICK_CITY_A_REQUEST_CODE) {
+  fun onCityAResultsReceived(activityResult: ActivityResult) {
+    getCityFromResults(activityResult)?.let { city ->
       onCityASet(city, false)
-    } else if (requestCode == Constants.PICK_CITY_B_REQUEST_CODE) {
+    }
+  }
+
+  fun onCityBResultsReceived(activityResult: ActivityResult) {
+    getCityFromResults(activityResult)?.let { city ->
       onCityBSet(city, false)
     }
+  }
+
+  private fun getCityFromResults(activityResult: ActivityResult) : City? {
+    if (activityResult.resultCode != Activity.RESULT_OK) {
+      return null
+    }
+
+    val data = requireNotNull(activityResult.data)
+    return requireNotNull(data.getParcelableExtra(Constants.CITY_EXTRA_KEY)) as City
   }
 
   private fun onCityASet(city: City, readFromPrefs: Boolean) {
@@ -192,12 +210,12 @@ class RouteCardViewPresenter(
     Timber.i("Connected to LocationService")
     mIsBoundToLocationService = true
     mLocationService = service
-    mLocationService?.addLocationCallbackClient(mLocationCallbackLazy)
+    mLocationService?.addLocationCallbackClient(mLocationCallback)
   }
 
   override fun onLocationServiceDisconnected() {
     mIsBoundToLocationService = false
-    mLocationService?.removeLocationCallbackClient(mLocationCallbackLazy)
+    mLocationService?.removeLocationCallbackClient(mLocationCallback)
     mLocationService = null
     Timber.e("Disconnected from LocationService")
   }
@@ -236,16 +254,6 @@ class RouteCardViewPresenter(
     view?.apply {
       setRemainingRouteDistance(distanceToB)
       setArrivalTime(remainingTime)
-    }
-  }
-
-  private val mLocationCallbackLazy by lazy {
-    object : LocationService.LocationCallback {
-      override fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?) {}
-
-      override fun onLocationChanged(location: Location) {
-        updateRemainingRouteInfo(location)
-      }
     }
   }
 }

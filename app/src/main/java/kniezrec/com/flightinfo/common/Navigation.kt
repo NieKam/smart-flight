@@ -62,7 +62,7 @@ object Navigation {
     return intent
   }
 
-  fun getActionForPermission(permission: String): String? {
+  fun getActionForPermission(permission: String): String {
     return permission + "_ACTION"
   }
 

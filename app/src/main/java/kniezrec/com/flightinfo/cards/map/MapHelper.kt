@@ -2,8 +2,7 @@ package kniezrec.com.flightinfo.cards.map
 
 import android.content.Context
 import kniezrec.com.flightinfo.common.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+
 import timber.log.Timber
 import java.io.FileOutputStream
 import java.io.IOException
@@ -16,7 +15,7 @@ import java.io.OutputStream
 
 class MapHelper(private val context: Context) {
 
-    suspend fun doCopy() : Boolean = withContext(Dispatchers.IO) {
+    fun doCopy() : Boolean  {
         Timber.i("Start map copy")
         var inStream: InputStream? = null
         var out: OutputStream? = null
@@ -43,13 +42,13 @@ class MapHelper(private val context: Context) {
         }
 
         Timber.i("Map copy finish. Returning results.")
-        return@withContext isSuccessful
+        return isSuccessful
     }
 
     @Throws(IOException::class)
-    private suspend fun copyFile(inStream: InputStream?, out: OutputStream?) = withContext(Dispatchers.IO) {
+    private fun copyFile(inStream: InputStream?, out: OutputStream?) {
         val buffer = ByteArray(1024)
-        var read: Int? = 0
+        var read: Int?
 
         while (run {
                 read = inStream?.read(buffer)

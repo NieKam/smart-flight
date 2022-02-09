@@ -14,7 +14,13 @@ import kniezrec.com.flightinfo.common.Constants
 class SettingsFragment : PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
+  companion object {
+    const val PREF_NAME = "LocalPrefs"
+  }
+
   override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    preferenceManager.sharedPreferencesName = PREF_NAME
+
     addPreferencesFromResource(R.xml.app_preferences_layout)
     if (arguments?.getBoolean(Constants.HIGHLIGHT_CUSTOM_SETTINGS) == true) {
       findPreference<CustomCheckBoxPreference>(Constants.FORCE_ZOOM_PREFERENCE_KEY)?.apply {
