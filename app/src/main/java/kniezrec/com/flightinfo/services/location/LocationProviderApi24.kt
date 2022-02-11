@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
+import timber.log.Timber
 
 @RequiresApi(Build.VERSION_CODES.N)
 class LocationProviderApi24(private val locationManager: LocationManager) : LocationProvider {
@@ -22,6 +23,8 @@ class LocationProviderApi24(private val locationManager: LocationManager) : Loca
 
     private val gnssStatusCallback = object : GnssStatus.Callback() {
         override fun onSatelliteStatusChanged(status: GnssStatus) {
+            super.onSatelliteStatusChanged(status)
+            Timber.d("onSatelliteStatusChanged ${status.satelliteCount}")
             val satellites = mutableListOf<Satellite>()
             val size = status.satelliteCount
             (0 until size).forEach { i->
@@ -32,6 +35,7 @@ class LocationProviderApi24(private val locationManager: LocationManager) : Loca
                     )
                 )
             }
+            satellitesUpdateCallback?.invoke(satellites)
         }
     }
 

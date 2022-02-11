@@ -1,13 +1,16 @@
-package kniezrec.com.flightinfo.services
+package kniezrec.com.flightinfo.services.location
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.location.*
+import android.location.Location
+import android.location.LocationManager
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
@@ -22,7 +25,6 @@ import kniezrec.com.flightinfo.common.Constants.Companion.NOTIFICATION_DISMISSED
 import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.common.NotificationBroadcastReceiver
 import kniezrec.com.flightinfo.services.location.*
-import kniezrec.com.flightinfo.services.location.LocationProvider
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import timber.log.Timber
 
@@ -95,6 +97,7 @@ class LocationService : Service() {
   }
 
   override fun onDestroy() {
+    Timber.i("onDestroy()")
     stopLocationUpdates()
     LocalBroadcastManager.getInstance(this).apply {
       unregisterReceiver(mAppStateBroadcastReceiver)
@@ -186,7 +189,7 @@ class LocationService : Service() {
     deleteIntent.action = NOTIFICATION_DISMISSED_ACTION
     val deleteContentIntent = PendingIntent.getBroadcast(
         this, STOP_GPS_REQUEST_CODE,
-        deleteIntent, 0)
+        deleteIntent, FLAG_IMMUTABLE)
 
     val notificationIntent = Intent(this, MainActivity::class.java).apply {
       action = Intent.ACTION_MAIN
@@ -196,7 +199,7 @@ class LocationService : Service() {
 
     val contentIntent = PendingIntent.getActivity(
         this, OPEN_APP_REQUEST_CODE,
-        notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        notificationIntent, FLAG_IMMUTABLE)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val name = getString(R.string.channel_name)

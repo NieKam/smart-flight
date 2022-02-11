@@ -38,6 +38,11 @@ class MainActivity : BaseActivity(), ResizableActivity, MainActivityPresenter.Vi
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        finishAffinity()
+    }
+
     override fun onStart() {
         super.onStart()
         mPresenter.attachView(this)

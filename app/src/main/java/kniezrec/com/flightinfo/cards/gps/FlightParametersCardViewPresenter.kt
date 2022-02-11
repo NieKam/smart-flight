@@ -6,8 +6,8 @@ import kniezrec.com.flightinfo.avionic.calculators.Altitude
 import kniezrec.com.flightinfo.avionic.calculators.Pressure
 import kniezrec.com.flightinfo.avionic.calculators.VerticalSpeedCalculator
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
-import kniezrec.com.flightinfo.services.LocationService
 import kniezrec.com.flightinfo.services.SensorService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import timber.log.Timber

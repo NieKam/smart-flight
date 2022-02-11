@@ -9,7 +9,7 @@ import kniezrec.com.flightinfo.base.BaseViewPresenter
 import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.db.CitiesDataSource
 import kniezrec.com.flightinfo.db.City
-import kniezrec.com.flightinfo.services.FindCityService
+import kniezrec.com.flightinfo.services.city.FindCityService
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

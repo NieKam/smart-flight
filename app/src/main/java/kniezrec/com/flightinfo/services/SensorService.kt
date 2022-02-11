@@ -73,7 +73,7 @@ class SensorService : Service(), SensorEventListener {
 
   override fun onDestroy() {
     stopSensorListening()
-    Timber.i("SensorService: onDestroy")
+    Timber.i("onDestroy()")
     LocalBroadcastManager.getInstance(this).unregisterReceiver(mAppStateBroadcastReceiver)
     super.onDestroy()
   }

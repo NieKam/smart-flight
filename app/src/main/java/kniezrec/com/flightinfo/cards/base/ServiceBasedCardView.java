@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import kniezrec.com.flightinfo.common.Navigation;
-import kniezrec.com.flightinfo.services.LocationService;
+import kniezrec.com.flightinfo.services.location.LocationService;
 import kniezrec.com.flightinfo.services.SensorService;
 
 /**

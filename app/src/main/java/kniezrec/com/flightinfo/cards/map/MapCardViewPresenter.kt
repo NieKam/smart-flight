@@ -6,7 +6,7 @@ import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
 import kniezrec.com.flightinfo.common.Constants
 import kniezrec.com.flightinfo.common.toggle
 import kniezrec.com.flightinfo.db.CitiesDataSource
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.SensorService
 import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
@@ -127,9 +127,11 @@ class MapCardViewPresenter(
   }
 
   fun onRouteChanged(intent: Intent) {
+    Timber.i("onRouteChanged $intent")
     val viewContract = view ?: return
 
     if (intent.hasExtra(Constants.ROUTE_NOT_READY_KEY)) {
+      Timber.i("onRouteChanged ROUTE_NOT_READY_KEY")
       viewContract.clearPath()
     } else {
       intent.let {

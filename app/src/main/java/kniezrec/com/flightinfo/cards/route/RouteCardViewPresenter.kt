@@ -13,7 +13,7 @@ import kniezrec.com.flightinfo.common.Constants
 import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.db.CitiesDataSource
 import kniezrec.com.flightinfo.db.City
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import kotlinx.coroutines.CoroutineScope

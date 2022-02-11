@@ -1,7 +1,7 @@
 package kniezrec.com.flightinfo.cards.satellites
 
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.location.Satellite
 import kniezrec.com.flightinfo.services.location.SatellitesUpdateCallback
 

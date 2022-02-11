@@ -59,9 +59,10 @@ class MapCardView @JvmOverloads constructor(
     }
   }
 
+  private val mPolylinePath: Polyline
+
   private var mMapController: IMapController
   private var mLocationMarker: Marker
-  private var mPolylinePath: Polyline
   private var mSnackBar: TopSnackbar? = null
 
   private val mBinding : MapCardLayoutBinding =
@@ -148,6 +149,7 @@ class MapCardView @JvmOverloads constructor(
   }
 
   override fun drawPath(pointA: GeoPoint, pointB: GeoPoint) {
+    mBinding.mapView.overlays.remove(mPolylinePath)
     mPolylinePath.points = listOf(pointA, pointB)
     mBinding.mapView.overlays.add(mPolylinePath)
     mBinding.mapView.invalidate()
