@@ -1,9 +1,9 @@
 package kniezrec.com.flightinfo.cards.satellites
 
-import android.location.GpsSatellite
-import android.location.Location
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationService
+import kniezrec.com.flightinfo.services.location.Satellite
+import kniezrec.com.flightinfo.services.location.SatellitesUpdateCallback
 
 /**
  * Copyright by Kamil Niezrecki
@@ -13,7 +13,11 @@ class SatellitesCardViewPresenter :
     ServiceBasedCardPresenter<SatellitesCardViewPresenter.ViewContract>() {
 
     interface ViewContract : ServiceBasedCardPresenter.ViewContract {
-        fun showOnBarChart(satellites: Iterable<GpsSatellite>?)
+        fun showOnBarChart(satellites: List<Satellite>)
+    }
+
+    private val mLocationCallback : SatellitesUpdateCallback = {
+        view?.showOnBarChart(it)
     }
 
     private var mService: LocationService? = null
@@ -27,7 +31,7 @@ class SatellitesCardViewPresenter :
     override fun onViewDetached(viewContract: ViewContract) {
         super.onViewDetached(viewContract)
         if (mIsBoundToLocationService) {
-            mService?.removeLocationCallbackClient(mLocationCallbackLazy)
+            mService?.removeGpsStatusChangeCallbackClient(mLocationCallback)
             viewContract.disconnectFromLocationService()
         }
     }
@@ -35,21 +39,11 @@ class SatellitesCardViewPresenter :
     override fun onLocationServiceConnected(service: LocationService) {
         mIsBoundToLocationService = true
         mService = service
-        service.addLocationCallbackClient(mLocationCallbackLazy)
+        service.addGpsStatusChangeCallbackClient(mLocationCallback)
     }
 
     override fun onLocationServiceDisconnected() {
         mIsBoundToLocationService = false
         mService = null
-    }
-
-    private val mLocationCallbackLazy by lazy {
-        object : LocationService.LocationCallback {
-            override fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?) {
-                view?.showOnBarChart(satellites)
-            }
-
-            override fun onLocationChanged(location: Location) {}
-        }
     }
 }

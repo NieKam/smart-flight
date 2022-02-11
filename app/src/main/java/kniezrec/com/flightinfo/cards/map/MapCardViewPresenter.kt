@@ -1,18 +1,14 @@
 package kniezrec.com.flightinfo.cards.map
 
 import android.content.Intent
-import android.location.GpsSatellite
-import android.location.Location
-import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import kniezrec.com.flightinfo.avionic.Course
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardPresenter
 import kniezrec.com.flightinfo.common.Constants
 import kniezrec.com.flightinfo.common.toggle
 import kniezrec.com.flightinfo.db.CitiesDataSource
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.SensorService
+import kniezrec.com.flightinfo.services.location.LocationUpdateCallback
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.osmdroid.util.GeoPoint
 import timber.log.Timber
-import java.io.*
+import java.io.File
 
 /**
  * Copyright by Kamil Niezrecki
@@ -52,6 +48,13 @@ class MapCardViewPresenter(
   }
 
   val defaultGeoPoint = GeoPoint(32.0, -32.0)
+  private val mLocationCallback : LocationUpdateCallback = { location ->
+    view?.drawPointOnMap(location.latitude, location.longitude)
+    if (!mCenteredForTheFirstDraw) {
+      view?.centerOnMap(location.latitude, location.longitude)
+      mCenteredForTheFirstDraw = true
+    }
+  }
 
   private var mIsBoundToLocationService = false
   private var mIsBoundToSensorService = false
@@ -77,7 +80,7 @@ class MapCardViewPresenter(
     super.onViewDetached(viewContract)
 
     if (mIsBoundToLocationService) {
-      mLocationService?.removeLocationCallbackClient(mLocationCallbackLazy)
+      mLocationService?.removeLocationCallbackClient(mLocationCallback)
       viewContract.disconnectFromLocationService()
     }
 
@@ -124,9 +127,11 @@ class MapCardViewPresenter(
   }
 
   fun onRouteChanged(intent: Intent) {
+    Timber.i("onRouteChanged $intent")
     val viewContract = view ?: return
 
     if (intent.hasExtra(Constants.ROUTE_NOT_READY_KEY)) {
+      Timber.i("onRouteChanged ROUTE_NOT_READY_KEY")
       viewContract.clearPath()
     } else {
       intent.let {
@@ -169,7 +174,7 @@ class MapCardViewPresenter(
     Timber.i("Connected to LocationService")
     mIsBoundToLocationService = true
     mLocationService = service
-    mLocationService?.addLocationCallbackClient(mLocationCallbackLazy)
+    mLocationService?.addLocationCallbackClient(mLocationCallback)
   }
 
   override fun onLocationServiceDisconnected() {
@@ -190,20 +195,6 @@ class MapCardViewPresenter(
     object : SensorService.CourseCallback {
       override fun onCourseFixed(course: Course) {
         view?.rotateLocationMarker(course.azimuthNormalized.toFloat())
-      }
-    }
-  }
-
-  private val mLocationCallbackLazy by lazy {
-    object : LocationService.LocationCallback {
-      override fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?) {}
-
-      override fun onLocationChanged(location: Location) {
-        view?.drawPointOnMap(location.latitude, location.longitude)
-        if (!mCenteredForTheFirstDraw) {
-          view?.centerOnMap(location.latitude, location.longitude)
-          mCenteredForTheFirstDraw = true
-        }
       }
     }
   }

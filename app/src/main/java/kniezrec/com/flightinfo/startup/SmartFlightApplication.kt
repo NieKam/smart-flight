@@ -24,5 +24,4 @@ class SmartFlightApplication : Application() {
       Timber.plant(Timber.DebugTree())
     }
   }
-
 }

@@ -36,7 +36,7 @@
         android:exported="false"
         />
     <service
-        android:name=".services.LocationService"
+        android:name=".services.location.LocationService"
         android:enabled="true"
         android:exported="false"
         />
@@ -47,7 +47,7 @@
         />
 
     <service
-        android:name=".services.FindCityService"
+        android:name=".services.city.FindCityService"
         android:enabled="true"
         android:exported="false"
         />

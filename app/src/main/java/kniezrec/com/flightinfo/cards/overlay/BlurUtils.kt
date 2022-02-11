@@ -16,7 +16,7 @@ class BlurUtils(private val root: ViewGroup) {
     private var mBlurContent: View? = null
 
     init {
-        requireNotNull(mOverlayView, { "You need to add OverlayView to your layout." })
+        requireNotNull(mOverlayView) { "You need to add OverlayView to your layout." }
     }
 
     fun on(@IdRes blurViewId: Int): BlurUtils {

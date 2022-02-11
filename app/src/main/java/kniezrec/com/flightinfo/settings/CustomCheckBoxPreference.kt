@@ -1,5 +1,6 @@
 package kniezrec.com.flightinfo.settings
 
+import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
@@ -7,22 +8,21 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.preference.CheckBoxPreference
 import androidx.preference.PreferenceViewHolder
-import androidx.vectordrawable.graphics.drawable.ArgbEvaluator
 import kniezrec.com.flightinfo.R
 
 
 /**
  * Copyright by Kamil Niezrecki
  */
-class CustomCheckBoxPreference(context: Context?, attrs: AttributeSet) :
+class CustomCheckBoxPreference(context: Context, attrs: AttributeSet) :
     CheckBoxPreference(context, attrs) {
 
   var animateBackground = false
 
-  override fun onBindViewHolder(holder: PreferenceViewHolder?) {
+  override fun onBindViewHolder(holder: PreferenceViewHolder) {
     super.onBindViewHolder(holder)
     if (animateBackground) {
-      startBackgroundAnimation(holder?.itemView)
+      startBackgroundAnimation(holder.itemView)
       // Prevent animating when user tap on the preference because onBindViewHolder is called once again.
       animateBackground = false
     }

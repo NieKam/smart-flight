@@ -2,12 +2,9 @@ package kniezrec.com.flightinfo.cards.satellites
 
 import android.content.Context
 import android.graphics.Color
-import android.location.GpsSatellite
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
@@ -19,8 +16,8 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardView
 import kniezrec.com.flightinfo.common.empty
-import kniezrec.com.flightinfo.databinding.MapCardLayoutBinding
 import kniezrec.com.flightinfo.databinding.SatellitesCardLayoutBinding
+import kniezrec.com.flightinfo.services.location.Satellite
 
 /**
  * Copyright by Kamil Niezrecki
@@ -95,14 +92,14 @@ class SatellitesCardView @JvmOverloads constructor(
     mBinding.satellitesChart.invalidate()
   }
 
-  override fun showOnBarChart(satellites: Iterable<GpsSatellite>?) {
+  override fun showOnBarChart(satellites: List<Satellite>) {
     val chartColors = ArrayList<Int>()
     val yValues = ArrayList<BarEntry>()
     var connectedSatellites = 0
 
-    satellites?.forEachIndexed { i, sat ->
-      yValues.add(BarEntry(i.toFloat(), sat.snr))
-      if (sat.usedInFix()) {
+    satellites.forEachIndexed { i, sat ->
+      yValues.add(BarEntry(i.toFloat(), sat.signalStrength))
+      if (sat.usedInFix) {
         connectedSatellites++
         chartColors.add(mGreenColor)
       } else {

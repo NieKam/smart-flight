@@ -4,6 +4,8 @@ import android.content.Context
 import android.hardware.SensorManager
 import android.view.Surface
 import android.view.WindowManager
+import kotlin.math.asin
+import kotlin.math.atan2
 
 /**
  * Copyright by Kamil Niezrecki
@@ -76,13 +78,13 @@ class OrientationCalculator(context: Context) {
   private fun getRollPitchYaw(rpy: FloatArray, q: FloatArray) {
     var x = ((q[0] * q[1] + q[2] * q[3]) * 2.0f).toDouble()
     var y = (1.0f - (((q[1] * q[1]) + (q[2] * q[2])) * 2.0f)).toDouble()
-    rpy[0] = (Math.atan2(x, y) * R2D).toFloat()
+    rpy[0] = (atan2(x, y) * R2D).toFloat()
 
     val a = (((q[0] * q[2]) - (q[3] * q[1])) * 2.0f).toDouble()
-    rpy[1] = (Math.asin(a) * R2D).toFloat()
+    rpy[1] = (asin(a) * R2D).toFloat()
 
     x = (((q[0] * q[3]) + (q[1] * q[2])) * 2.0f).toDouble()
     y = (1.0f - (((q[2] * q[2]) + (q[3] * q[3])) * 2.0f)).toDouble()
-    rpy[2] = (Math.atan2(x, y) * R2D).toFloat()
+    rpy[2] = (atan2(x, y) * R2D).toFloat()
   }
 }

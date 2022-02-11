@@ -1,16 +1,18 @@
-package kniezrec.com.flightinfo.services
+package kniezrec.com.flightinfo.services.location
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.*
+import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.location.*
+import android.location.Location
+import android.location.LocationManager
 import android.os.Binder
 import android.os.Build
-import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -22,6 +24,7 @@ import kniezrec.com.flightinfo.common.Constants.Companion.APP_LIFECYCLE_ACTION
 import kniezrec.com.flightinfo.common.Constants.Companion.NOTIFICATION_DISMISSED_ACTION
 import kniezrec.com.flightinfo.common.Navigation
 import kniezrec.com.flightinfo.common.NotificationBroadcastReceiver
+import kniezrec.com.flightinfo.services.location.*
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 import timber.log.Timber
 
@@ -32,26 +35,19 @@ import timber.log.Timber
 private const val OPEN_APP_REQUEST_CODE: Int = 0
 private const val STOP_GPS_REQUEST_CODE = 1
 private const val NOTIFICATION_ID = 777
-private const val MIN_TIME = 100L
-private const val MIN_DISTANCE = 10F
 private const val CHANNEL_ID = "Location Info"
 
-class LocationService : Service(), LocationListener, GpsStatus.Listener {
+class LocationService : Service() {
+  private val mLocationCallbackClients: HashSet<LocationUpdateCallback> = HashSet()
+  private val mGpsStatusCallbackClients: HashSet<SatellitesUpdateCallback> = HashSet()
 
-  interface LocationCallback {
-    fun onGpsStatusChanged(satellites: Iterable<GpsSatellite>?)
-    fun onLocationChanged(location: Location)
-  }
-
-  private val mCallbackClients: HashSet<LocationCallback> = HashSet()
   private val mBinder: IBinder = LocalBinder()
 
   private var mNotificationManager: NotificationManager? = null
-  private lateinit var mLocationManager: LocationManager
   private var mIsLocationEnabled = false
-  private var mGpsStatus: GpsStatus? = null
-  private var mLastObtainedLocation: Location? = null
+
   private lateinit var mPreferences: FlightAppPreferences
+  private lateinit var mLocationProvider: LocationProvider
 
   private val mNotification: Notification by lazy {
     initNotification()
@@ -65,21 +61,43 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
 
   override fun onCreate() {
     super.onCreate()
-    mLocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    mLocationProvider = getLocationProvider().also {
+      it.registerForLocationUpdates { newLocation ->
+        mLocationCallbackClients.forEach { client -> client.invoke(newLocation) }
+      }
+
+      it.registerForSatellitesUpdates { satellites ->
+        mGpsStatusCallbackClients.forEach { client -> client.invoke(satellites) }
+      }
+    }
+
     mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     val appLifecycleIntentFilter = IntentFilter(APP_LIFECYCLE_ACTION)
     LocalBroadcastManager.getInstance(this).registerReceiver(
-        mAppStateBroadcastReceiver,
-        appLifecycleIntentFilter)
+      mAppStateBroadcastReceiver,
+      appLifecycleIntentFilter
+    )
 
-    val permissionIntent = IntentFilter(Navigation.getActionForPermission(Manifest.permission.ACCESS_FINE_LOCATION))
-    LocalBroadcastManager.getInstance(this).registerReceiver(mPermissionReceiver, permissionIntent)
+    val permissionIntent =
+      IntentFilter(Navigation.getActionForPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+    LocalBroadcastManager.getInstance(this)
+      .registerReceiver(mPermissionReceiver, permissionIntent)
 
     mPreferences = FlightAppPreferences(this)
   }
 
+  private fun getLocationProvider(): LocationProvider {
+    val manager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      LocationProviderApi24(manager)
+    } else {
+      LocationProviderImpl(manager)
+    }
+  }
+
   override fun onDestroy() {
+    Timber.i("onDestroy()")
     stopLocationUpdates()
     LocalBroadcastManager.getInstance(this).apply {
       unregisterReceiver(mAppStateBroadcastReceiver)
@@ -113,10 +131,7 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
     }
 
     Timber.i("startLocationUpdates() called")
-    mLocationManager.let {
-      it.addGpsStatusListener(this)
-      it.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DISTANCE, this)
-    }
+    mLocationProvider.startLocationUpdates()
     mIsLocationEnabled = true
   }
 
@@ -127,56 +142,32 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
     }
 
     Timber.i("stopLocationUpdates() called")
-
-    mLocationManager.let {
-      it.removeGpsStatusListener(this)
-      it.removeUpdates(this)
-    }
-
+    mLocationProvider.stopLocationUpdates()
     mIsLocationEnabled = false
   }
 
-  /** GPS Status */
-  @SuppressLint("MissingPermission")
-  override fun onGpsStatusChanged(event: Int) {
-    mGpsStatus = mLocationManager.getGpsStatus(mGpsStatus)
-    val satellites = mGpsStatus?.satellites
-
-    mCallbackClients.forEach {
-      it.onGpsStatusChanged(satellites)
-    }
-  }
-
-  fun isLocationObtained(): Boolean {
-    return mLastObtainedLocation != null
-  }
-
   fun getLastObtainedLocation(): Location? {
-    return mLastObtainedLocation
+    return mLocationProvider.getLastObtainedLocation()
   }
 
-  /** LocationListener */
-
-  override fun onLocationChanged(location: Location) {
-    mLastObtainedLocation = location
-
-    for (client in mCallbackClients) {
-      client.onLocationChanged(location)
-    }
+  fun addGpsStatusChangeCallbackClient(callback: SatellitesUpdateCallback) {
+    mGpsStatusCallbackClients.add(callback)
+    Timber.i("Added SatellitesUpdateCallback callback, total items %d", mGpsStatusCallbackClients.size)
   }
 
-  override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {}
-
-  /** End of LocationListener */
-
-  fun addLocationCallbackClient(callback: LocationCallback) {
-    mCallbackClients.add(callback)
-    Timber.i("Added LocationCallback callback, total items %d", mCallbackClients.size)
+  fun removeGpsStatusChangeCallbackClient(callback: SatellitesUpdateCallback) {
+    mGpsStatusCallbackClients.remove(callback)
+    Timber.i("Removed SatellitesUpdateCallback callback, total items %d", mGpsStatusCallbackClients.size)
   }
 
-  fun removeLocationCallbackClient(callback: LocationCallback) {
-    mCallbackClients.remove(callback)
-    Timber.i("Removed LocationCallback callback, total items %d", mCallbackClients.size)
+  fun addLocationCallbackClient(callback: LocationUpdateCallback) {
+    mLocationCallbackClients.add(callback)
+    Timber.i("Added LocationUpdateCallback callback, total items %d", mLocationCallbackClients.size)
+  }
+
+  fun removeLocationCallbackClient(callback: LocationUpdateCallback) {
+    mLocationCallbackClients.remove(callback)
+    Timber.i("Removed LocationUpdateCallback callback, total items %d", mLocationCallbackClients.size)
   }
 
   private fun showNotification() {
@@ -198,7 +189,7 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
     deleteIntent.action = NOTIFICATION_DISMISSED_ACTION
     val deleteContentIntent = PendingIntent.getBroadcast(
         this, STOP_GPS_REQUEST_CODE,
-        deleteIntent, 0)
+        deleteIntent, FLAG_IMMUTABLE)
 
     val notificationIntent = Intent(this, MainActivity::class.java).apply {
       action = Intent.ACTION_MAIN
@@ -208,7 +199,7 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
 
     val contentIntent = PendingIntent.getActivity(
         this, OPEN_APP_REQUEST_CODE,
-        notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        notificationIntent, FLAG_IMMUTABLE)
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val name = getString(R.string.channel_name)
@@ -238,8 +229,8 @@ class LocationService : Service(), LocationListener, GpsStatus.Listener {
     }
 
     private fun canShowNotification(context: Context): Boolean {
-      return !isLocationObtained() &&
-          PermissionManager.hasLocationPermission(context) &&
+      val locationObtained = mLocationProvider.getLastObtainedLocation() != null
+      return !locationObtained  && PermissionManager.hasLocationPermission(context) &&
           mPreferences.canShowNotification()
     }
 

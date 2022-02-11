@@ -6,7 +6,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import kniezrec.com.flightinfo.base.BaseViewPresenter;
-import kniezrec.com.flightinfo.services.LocationService;
+import kniezrec.com.flightinfo.services.location.LocationService;
 import kniezrec.com.flightinfo.services.SensorService;
 
 /**

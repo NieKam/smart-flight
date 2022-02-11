@@ -51,15 +51,12 @@ class TopSnackbarController {
 
   private TopSnackbarController() {
     mLock = new Object();
-    mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-      @Override
-      public boolean handleMessage(Message message) {
-        if (message.what == MSG_TIMEOUT) {
-          handleTimeout((SnackbarRecord) message.obj);
-          return true;
-        }
-        return false;
+    mHandler = new Handler(Looper.getMainLooper(), message -> {
+      if (message.what == MSG_TIMEOUT) {
+        handleTimeout((SnackbarRecord) message.obj);
+        return true;
       }
+      return false;
     });
   }
 

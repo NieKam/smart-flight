@@ -3,9 +3,7 @@ package kniezrec.com.flightinfo.cards.gps
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardView
-import kniezrec.com.flightinfo.databinding.CourseCardLayoutBinding
 import kniezrec.com.flightinfo.databinding.FlightParametersCardLayoutBinding
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 

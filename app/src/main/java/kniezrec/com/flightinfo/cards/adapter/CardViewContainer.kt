@@ -1,8 +1,6 @@
 package kniezrec.com.flightinfo.cards.adapter
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
@@ -20,7 +18,6 @@ import kniezrec.com.flightinfo.cards.permission.PermissionCardView
 import kniezrec.com.flightinfo.cards.permission.PermissionManager
 import kniezrec.com.flightinfo.cards.route.RouteCardView
 import kniezrec.com.flightinfo.cards.satellites.SatellitesCardView
-import kniezrec.com.flightinfo.common.Constants
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 
 /**
@@ -74,12 +71,6 @@ class CardViewContainer @JvmOverloads constructor(
 
   fun onPermissionDeniedPermanently() {
     mPermissionCardView?.onPermissionDeniedPermanently()
-  }
-
-  fun onActivityResultsReceived(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (resultCode == Activity.RESULT_OK && data?.action == Constants.PICK_CITY_ACTION) {
-      mRouteCardView.onPickCityResults(requestCode, data)
-    }
   }
 
   fun refreshView() {

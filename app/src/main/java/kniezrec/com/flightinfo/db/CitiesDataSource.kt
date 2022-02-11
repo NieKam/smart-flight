@@ -13,11 +13,7 @@ import kniezrec.com.flightinfo.startup.SmartFlightApplication
 class CitiesDataSource(context: Context) {
 
   private val mDbHelper = (context.applicationContext as SmartFlightApplication).getDbHelper()
-  private val mDatabase: SQLiteDatabase
-
-  init {
-    mDatabase = mDbHelper.readableDatabase
-  }
+  private val mDatabase: SQLiteDatabase = mDbHelper.readableDatabase
 
   fun isOpen(): Boolean {
     return mDatabase.isOpen
@@ -66,7 +62,7 @@ class CitiesDataSource(context: Context) {
   fun getCitiesThatNameContain(name: String): ArrayList<City> {
     requireNonUi()
 
-    val preparedName = "%${name.trim().toLowerCase()}%"
+    val preparedName = "%${name.trim().lowercase()}%"
     val cursor = mDatabase.rawQuery(CitiesTable.SELECT_NAME, arrayOf(preparedName))
     cursor.moveToFirst()
     val cities: ArrayList<City> = ArrayList(cursor.count)

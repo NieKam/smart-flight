@@ -1,6 +1,7 @@
 package kniezrec.com.flightinfo.common
 
 import android.app.Activity
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
@@ -12,11 +13,12 @@ import android.provider.Settings
 import androidx.core.content.ContextCompat
 import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.db.City
-import kniezrec.com.flightinfo.services.FindCityService
-import kniezrec.com.flightinfo.services.LocationService
+import kniezrec.com.flightinfo.services.city.FindCityService
+import kniezrec.com.flightinfo.services.location.LocationService
 import kniezrec.com.flightinfo.services.SensorService
 import kniezrec.com.flightinfo.settings.SettingsActivity
 import org.osmdroid.util.GeoPoint
+import timber.log.Timber
 
 /**
  * Copyright by Kamil Niezrecki
@@ -62,7 +64,7 @@ object Navigation {
     return intent
   }
 
-  fun getActionForPermission(permission: String): String? {
+  fun getActionForPermission(permission: String): String {
     return permission + "_ACTION"
   }
 
@@ -89,6 +91,7 @@ object Navigation {
           GeoPoint(mCityB.latitude, mCityB.longitude) as Parcelable
       )
     } else {
+      Timber.i("ROUTE_NOT_READY_KEY intent")
       intent.putExtra(Constants.ROUTE_NOT_READY_KEY, true)
     }
 
