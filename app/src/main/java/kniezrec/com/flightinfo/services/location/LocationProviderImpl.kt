@@ -5,6 +5,7 @@ import android.location.GpsStatus
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Bundle
 import kniezrec.com.flightinfo.services.location.LocationProvider.Companion.MIN_DISTANCE
 import kniezrec.com.flightinfo.services.location.LocationProvider.Companion.MIN_TIME
 
@@ -27,9 +28,19 @@ class LocationProviderImpl(private val locationManager: LocationManager) : Locat
         }
     }
 
-    private val locationListener = LocationListener { location ->
-        lastObtainedLocation = location
-        locationUpdateCallback?.invoke(location)
+    private val locationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            lastObtainedLocation = location
+            locationUpdateCallback?.invoke(location)
+        }
+
+        override fun onProviderEnabled(provider: String) {}
+
+        override fun onProviderDisabled(provider: String) {}
+
+        @Deprecated("")
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        }
     }
 
     @SuppressLint("MissingPermission")

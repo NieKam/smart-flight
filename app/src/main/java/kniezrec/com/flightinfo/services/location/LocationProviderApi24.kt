@@ -1,8 +1,12 @@
 package kniezrec.com.flightinfo.services.location
 
 import android.annotation.SuppressLint
-import android.location.*
+import android.location.GnssStatus
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.annotation.RequiresApi
@@ -16,9 +20,20 @@ class LocationProviderApi24(private val locationManager: LocationManager) : Loca
     private var satellitesUpdateCallback: SatellitesUpdateCallback? = null
     private var locationUpdateCallback: LocationUpdateCallback? = null
 
-    private val locationListener = LocationListener { location ->
-        lastObtainedLocation = location
-        locationUpdateCallback?.invoke(location)
+
+    private val locationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            lastObtainedLocation = location
+            locationUpdateCallback?.invoke(location)
+        }
+
+        override fun onProviderEnabled(provider: String) {}
+
+        override fun onProviderDisabled(provider: String) {}
+
+        @Deprecated("")
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        }
     }
 
     private val gnssStatusCallback = object : GnssStatus.Callback() {
@@ -27,7 +42,7 @@ class LocationProviderApi24(private val locationManager: LocationManager) : Loca
             Timber.d("onSatelliteStatusChanged ${status.satelliteCount}")
             val satellites = mutableListOf<Satellite>()
             val size = status.satelliteCount
-            (0 until size).forEach { i->
+            (0 until size).forEach { i ->
                 satellites.add(
                     Satellite(
                         usedInFix = status.usedInFix(i),
