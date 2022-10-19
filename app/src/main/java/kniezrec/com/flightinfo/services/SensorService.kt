@@ -120,10 +120,10 @@ class SensorService : Service(), SensorEventListener {
 
     Timber.i("Start listening for sensor events.")
     mSensorManager?.let {
-      it.registerListener(this, mGForceSensor, SensorManager.SENSOR_DELAY_NORMAL)
-      it.registerListener(this, mMagneticSensor, SensorManager.SENSOR_DELAY_NORMAL)
-      it.registerListener(this, mPressureSensor, SensorManager.SENSOR_DELAY_NORMAL)
-      it.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_NORMAL)
+      it.registerListener(this, mGForceSensor, SensorManager.SENSOR_DELAY_GAME)
+      it.registerListener(this, mMagneticSensor, SensorManager.SENSOR_DELAY_GAME)
+      it.registerListener(this, mPressureSensor, SensorManager.SENSOR_DELAY_GAME)
+      it.registerListener(this, mRotationSensor, SensorManager.SENSOR_DELAY_GAME)
     }
     mIsServiceListening = true
   }

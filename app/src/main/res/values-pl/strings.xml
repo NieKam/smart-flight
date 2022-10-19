@@ -35,6 +35,7 @@
   <string name="settings">Ustawienia</string>
   <string name="about">O aplikacji</string>
   <string name="enable_gps_title">Włącz GPS</string>
+  <string name="gps_tip">Przesuń urządzenie bliżej okna</string>
   <string
       name="enable_gsp_message">Lokalizacja w telefonie jest wyłączona, czy chcesz ją włączyć?</string>
   <string name="cancel">Anuluj</string>
@@ -45,6 +46,7 @@
   <string name="hide">Ukryj</string>
   <string name="version">Wersja</string>
   <string name="open_settings">Otwórz ustawienia</string>
+  <string name="gps_bearing">Kierunek GPS: %d</string>
   <string name="max_zoom_tip">To jest maksymalne powiększenie. Wymuś większe w ustawieniach.</string>
   <string
       name="permission_description">Aplikacja do poprawnego działania wymaga uprawnień lokalizacji.\n Przyznaj uprawnienia, aby wyświetlić wszystkie karty</string>

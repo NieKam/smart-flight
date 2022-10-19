@@ -11,6 +11,7 @@ import kniezrec.com.flightinfo.R
 import kniezrec.com.flightinfo.cards.base.CanChangeVisibility
 import kniezrec.com.flightinfo.cards.base.ServiceBasedCardView
 import kniezrec.com.flightinfo.cards.overlay.BlurUtils
+import kniezrec.com.flightinfo.common.Constants
 import kniezrec.com.flightinfo.databinding.CourseCardLayoutBinding
 import kniezrec.com.flightinfo.settings.FlightAppPreferences
 
@@ -42,6 +43,10 @@ class CourseCardView @JvmOverloads constructor(
 
     override fun showOverlay() {
         BlurUtils(this).on(R.id.main_content).blur(R.string.missing_sensor_content, mHideCard)
+    }
+
+    override fun setBearingFromGps(bearing: Float) {
+        mBinding.gpsBearingLabel.text = resources.getString(R.string.gps_bearing, bearing.toInt()).plus(Constants.DEGREE_CHAR)
     }
 
     override fun setCourseText(label: String) {

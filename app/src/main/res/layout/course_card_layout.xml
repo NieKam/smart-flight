@@ -35,6 +35,16 @@
         app:layout_constraintStart_toStartOf="@+id/course_text_label"
         />
 
+    <TextView
+        android:id="@+id/gps_bearing_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextValue"
+        android:textSize="@dimen/text_mini"
+        app:layout_constraintTop_toBottomOf="@id/course_text_label"
+        app:layout_constraintStart_toStartOf="@+id/course_text_label"
+        />
+
     <ImageView
         android:id="@+id/plane_view"
         android:layout_width="wrap_content"

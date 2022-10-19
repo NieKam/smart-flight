@@ -27,7 +27,7 @@ class VerticalSpeedCalculator {
 
       "2"  -> "%+.1f m/min".format(toMetersPerMinute(height, time))
 
-      "3"  -> "%+.1f ft/min x 100".format(toFeetPerMinute(height, time))
+      "3"  -> "%+.1f ft/min".format(toFeetPerMinute(height, time))
 
       else -> throw IllegalArgumentException("Value not supported")
     }
@@ -37,7 +37,7 @@ class VerticalSpeedCalculator {
       Double = getVSInMeterPerSecondWithTrend(height, time) * METER_PER_MINUTE_FACTOR
 
   internal fun toFeetPerMinute(height: Double, time: Long):
-      Double = (getVSInMeterPerSecondWithTrend(height, time) * FEET_PER_MIN_FACTOR) / 100
+      Double = (getVSInMeterPerSecondWithTrend(height, time) * FEET_PER_MIN_FACTOR) / 1000
 
   internal fun toMetersPerSecond(height: Double, time: Long):
       Double = getVSInMeterPerSecondWithTrend(height, time)
