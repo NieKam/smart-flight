@@ -65,7 +65,7 @@ class TopSnackbarController {
       if (isCurrentSnackbar(callback)) {
         // Means that the callback is already in the queue. We'll just update the duration
         mCurrentSnackbar.duration = duration;
-        // If this is the TSnackbar currently being shown, call re-schedule it's
+        // If this is the TSnackbar currently being shown, call re-schedule its
         // timeout
         mHandler.removeCallbacksAndMessages(mCurrentSnackbar);
         scheduleTimeoutLocked(mCurrentSnackbar);
