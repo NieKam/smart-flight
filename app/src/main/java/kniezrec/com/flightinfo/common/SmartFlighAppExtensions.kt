@@ -41,11 +41,11 @@ fun String.fromHtml(): CharSequence {
 }
 
 fun <T> Context.findContextOfType(clazz: Class<out T>): T? {
-    var ctx = this
-    while (!clazz.isInstance(this)) {
-        if (this is ContextWrapper) {
-            val baseContext = this.baseContext
-            if (this === baseContext) {
+    var ctx: Context = this
+    while (!clazz.isInstance(ctx)) {
+        if (ctx is ContextWrapper) {
+            val baseContext = ctx.baseContext
+            if (ctx === baseContext) {
                 return null
             } else {
                 ctx = baseContext
@@ -55,5 +55,6 @@ fun <T> Context.findContextOfType(clazz: Class<out T>): T? {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     return ctx as T
 }
