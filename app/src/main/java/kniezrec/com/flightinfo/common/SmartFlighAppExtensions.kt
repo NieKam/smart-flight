@@ -55,5 +55,6 @@ fun <T> Context.findContextOfType(clazz: Class<out T>): T? {
         }
     }
 
+    @Suppress("UNCHECKED_CAST")
     return ctx as T
 }
